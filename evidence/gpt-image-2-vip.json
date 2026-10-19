@@ -1,0 +1,37 @@
+{
+  "model": "gpt-image-2-vip",
+  "kind": "image",
+  "status": "completed",
+  "parameters": {
+    "size": "1536x864"
+  },
+  "cost": {
+    "model": "gpt-image-2-vip",
+    "billing_status": "unavailable",
+    "actual_cost_usd": null,
+    "actual_credits": null
+  },
+  "catalog_rate": "0.0019",
+  "catalog_unit": "request",
+  "project": "Marinara Engine",
+  "file": "examples/gpt-image-2-vip.png",
+  "width": 1536,
+  "height": 864,
+  "validation_scope": "OpenAI-compatible JSON/base64 API boundary live test; full upstream UI/runtime pending",
+  "prompt": "Cinematic 16:9 fantasy role-playing game scene illustration, an empty moonlit alchemist workshop in a coastal tower, brass instruments, blue glass bottles, an open star chart on a wooden desk, a candle, ocean visible through an arched window, painterly realism, calm atmospheric worldbuilding, no characters, no text, no watermark.",
+  "date": "2026-10-19",
+  "model_batch_log": {
+    "count": 5,
+    "total_recorded_usd": "0.0095",
+    "distinct_recorded_usd": [
+      "0.0019"
+    ],
+    "phases": [
+      "unknown"
+    ],
+    "binding": "model/time-window batch; task association not assumed",
+    "net_cost_confirmed": false
+  },
+  "case_price_usd": "0.0019",
+  "case_price_basis": "Exact configured per-request rate; individual task settlement unavailable"
+}

@@ -1,0 +1,11 @@
+{
+  "kind": "video",
+  "model": "seedance-2",
+  "prompt": "Animate the workshop still with a gentle forward camera drift, subtle candle flicker, soft moonlit clouds and a quiet shimmering ocean through the window. Preserve the room layout and objects. No people, no cuts, no text, no audio.",
+  "duration": 4,
+  "resolution": "480p",
+  "aspect_ratio": "16:9",
+  "generate_audio": false,
+  "run_id": "1019-marinara-seedance-2",
+  "first_frame_file": "examples/gpt-image-2-vip.png"
+}

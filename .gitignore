@@ -1,0 +1,5 @@
+.env
+.toapis-state/
+__pycache__/
+node_modules/
+*.private.json

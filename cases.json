@@ -1,0 +1,147 @@
+[
+  {
+    "model": "gpt-image-2-vip",
+    "kind": "image",
+    "status": "completed",
+    "parameters": {
+      "size": "1536x864"
+    },
+    "cost": {
+      "model": "gpt-image-2-vip",
+      "billing_status": "unavailable",
+      "actual_cost_usd": null,
+      "actual_credits": null
+    },
+    "catalog_rate": "0.0019",
+    "catalog_unit": "request",
+    "project": "Marinara Engine",
+    "file": "examples/gpt-image-2-vip.png",
+    "width": 1536,
+    "height": 864,
+    "validation_scope": "OpenAI-compatible JSON/base64 API boundary live test; full upstream UI/runtime pending",
+    "prompt": "Cinematic 16:9 fantasy role-playing game scene illustration, an empty moonlit alchemist workshop in a coastal tower, brass instruments, blue glass bottles, an open star chart on a wooden desk, a candle, ocean visible through an arched window, painterly realism, calm atmospheric worldbuilding, no characters, no text, no watermark.",
+    "date": "2026-10-19",
+    "model_batch_log": {
+      "count": 5,
+      "total_recorded_usd": "0.0095",
+      "distinct_recorded_usd": [
+        "0.0019"
+      ],
+      "phases": [
+        "unknown"
+      ],
+      "binding": "model/time-window batch; task association not assumed",
+      "net_cost_confirmed": false
+    },
+    "case_price_usd": "0.0019",
+    "case_price_basis": "Exact configured per-request rate; individual task settlement unavailable"
+  },
+  {
+    "model": "gpt-image-2",
+    "kind": "image",
+    "status": "completed",
+    "parameters": {
+      "size": "1536x864"
+    },
+    "cost": {
+      "model": "gpt-image-2",
+      "billing_status": "unavailable",
+      "actual_cost_usd": null,
+      "actual_credits": null
+    },
+    "catalog_rate": "0.015",
+    "catalog_unit": "request",
+    "project": "Marinara Engine",
+    "file": "examples/gpt-image-2.png",
+    "width": 1672,
+    "height": 941,
+    "validation_scope": "OpenAI-compatible JSON/base64 API boundary live test; full upstream UI/runtime pending",
+    "prompt": "Cinematic 16:9 fantasy role-playing game scene illustration, an empty moonlit alchemist workshop in a coastal tower, brass instruments, blue glass bottles, an open star chart on a wooden desk, a candle, ocean visible through an arched window, painterly realism, calm atmospheric worldbuilding, no characters, no text, no watermark.",
+    "date": "2026-10-19",
+    "model_batch_log": {
+      "count": 5,
+      "total_recorded_usd": "0.075",
+      "distinct_recorded_usd": [
+        "0.015"
+      ],
+      "phases": [
+        "unknown"
+      ],
+      "binding": "model/time-window batch; task association not assumed",
+      "net_cost_confirmed": false
+    },
+    "case_price_usd": "0.015",
+    "case_price_basis": "Exact configured per-request rate; individual task settlement unavailable"
+  },
+  {
+    "model": "gpt-image-2.5-flare",
+    "kind": "image",
+    "status": "completed",
+    "parameters": {
+      "size": "1536x864"
+    },
+    "cost": {
+      "model": "gpt-image-2.5-flare",
+      "billing_status": "unavailable",
+      "actual_cost_usd": null,
+      "actual_credits": null
+    },
+    "catalog_rate": "0.0225",
+    "catalog_unit": "request",
+    "project": "Marinara Engine",
+    "file": "examples/gpt-image-2.5-flare.png",
+    "width": 1672,
+    "height": 941,
+    "validation_scope": "OpenAI-compatible JSON/base64 API boundary live test; full upstream UI/runtime pending",
+    "prompt": "Cinematic 16:9 fantasy role-playing game scene illustration, an empty moonlit alchemist workshop in a coastal tower, brass instruments, blue glass bottles, an open star chart on a wooden desk, a candle, ocean visible through an arched window, painterly realism, calm atmospheric worldbuilding, no characters, no text, no watermark.",
+    "date": "2026-10-19",
+    "model_batch_log": {
+      "count": 5,
+      "total_recorded_usd": "0.1125",
+      "distinct_recorded_usd": [
+        "0.0225"
+      ],
+      "phases": [
+        "unknown"
+      ],
+      "binding": "model/time-window batch; task association not assumed",
+      "net_cost_confirmed": false
+    },
+    "case_price_usd": "0.0225",
+    "case_price_basis": "Exact configured per-request rate; individual task settlement unavailable"
+  },
+  {
+    "model": "seedance-2",
+    "kind": "video",
+    "status": "completed",
+    "parameters": {
+      "duration": 4,
+      "resolution": "480p",
+      "aspect_ratio": "16:9"
+    },
+    "cost": {
+      "model": "seedance-2",
+      "billing_status": "settled",
+      "actual_cost_usd": "0.26676",
+      "actual_credits": "53.352"
+    },
+    "catalog_rate": "6.571429",
+    "catalog_unit": "1m_tokens",
+    "date": "2026-10-19",
+    "project": "Marinara Engine",
+    "file": "examples/seedance-2.mp4",
+    "validation_scope": "External ToAPIs first-frame media generator; native scene-video handler/MDX export not exercised",
+    "prompt": "Animate the workshop still with a gentle forward camera drift, subtle candle flicker, soft moonlit clouds and a quiet shimmering ocean through the window. Preserve the room layout and objects. No people, no cuts, no text, no audio.",
+    "first_frame": "examples/gpt-image-2-vip.png",
+    "actual_seconds": "4.04",
+    "actual_dimensions": [
+      864,
+      496
+    ],
+    "fully_decoded": true,
+    "audio_stream_present": false,
+    "case_price_usd": "0.26676",
+    "case_price_basis": "API billing=settled",
+    "actual_usd_per_second": "0.06602970297029702970297029703"
+  }
+]
