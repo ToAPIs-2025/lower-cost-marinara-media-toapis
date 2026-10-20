@@ -1,0 +1,777 @@
+{
+  "doubao-seedream-4-0": {
+    "model": "doubao-seedream-4-0",
+    "kind": "image",
+    "request": {
+      "model": "doubao-seedream-4-0",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "doubao-seedream-4-5": {
+    "model": "doubao-seedream-4-5",
+    "kind": "image",
+    "request": {
+      "model": "doubao-seedream-4-5",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "2K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "2K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "doubao-seedream-5-0": {
+    "model": "doubao-seedream-5-0",
+    "kind": "image",
+    "request": {
+      "model": "doubao-seedream-5-0",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "2K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "2K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "doubao-seedream-5-0-pro": {
+    "model": "doubao-seedream-5-0-pro",
+    "kind": "image",
+    "request": {
+      "model": "doubao-seedream-5-0-pro",
+      "n": 1,
+      "size": "1:1",
+      "resolution": "1K",
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 1,
+      "quality": "medium"
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "doubao-seedream-5-0-pro-global": {
+    "model": "doubao-seedream-5-0-pro-global",
+    "kind": "image",
+    "request": {
+      "model": "doubao-seedream-5-0-pro-global",
+      "size": "1:1",
+      "n": 1,
+      "resolution": "1K"
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "unavailable"
+  },
+  "flux-2-flex": {
+    "model": "flux-2-flex",
+    "kind": "image",
+    "request": {
+      "model": "flux-2-flex",
+      "size": "1:1",
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "flux-2-pro": {
+    "model": "flux-2-pro",
+    "kind": "image",
+    "request": {
+      "model": "flux-2-pro",
+      "size": "1:1",
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "flux-kontext-max": {
+    "model": "flux-kontext-max",
+    "kind": "image",
+    "request": {
+      "model": "flux-kontext-max",
+      "size": "1:1"
+    },
+    "pricing_conditions": {
+      "resolution": "model_default",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "flux-kontext-pro": {
+    "model": "flux-kontext-pro",
+    "kind": "image",
+    "request": {
+      "model": "flux-kontext-pro",
+      "size": "1:1"
+    },
+    "pricing_conditions": {
+      "resolution": "model_default",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gemini-2.5-flash-image-preview": {
+    "model": "gemini-2.5-flash-image-preview",
+    "kind": "image",
+    "request": {
+      "model": "gemini-2.5-flash-image-preview",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gemini-3-pro-image-preview": {
+    "model": "gemini-3-pro-image-preview",
+    "kind": "image",
+    "request": {
+      "model": "gemini-3-pro-image-preview",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gemini-3-pro-image-preview-vip": {
+    "model": "gemini-3-pro-image-preview-vip",
+    "kind": "image",
+    "request": {
+      "model": "gemini-3-pro-image-preview-vip",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gemini-3.1-flash-image-preview": {
+    "model": "gemini-3.1-flash-image-preview",
+    "kind": "image",
+    "request": {
+      "model": "gemini-3.1-flash-image-preview",
+      "n": 1,
+      "size": "1:1",
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gemini-3.1-flash-image-preview-vip": {
+    "model": "gemini-3.1-flash-image-preview-vip",
+    "kind": "image",
+    "request": {
+      "model": "gemini-3.1-flash-image-preview-vip",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gemini-nano-banana-2.1": {
+    "model": "gemini-nano-banana-2.1",
+    "kind": "image",
+    "request": {
+      "model": "gemini-nano-banana-2.1",
+      "n": 1,
+      "size": "1:1",
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gemini-nano-banana-2.1-vip": {
+    "model": "gemini-nano-banana-2.1-vip",
+    "kind": "image",
+    "request": {
+      "model": "gemini-nano-banana-2.1-vip",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gpt-image-2": {
+    "model": "gpt-image-2",
+    "kind": "image",
+    "request": {
+      "model": "gpt-image-2",
+      "n": 1,
+      "size": "1:1",
+      "resolution": "1K",
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gpt-image-2-vip": {
+    "model": "gpt-image-2-vip",
+    "kind": "image",
+    "request": {
+      "model": "gpt-image-2-vip",
+      "n": 1,
+      "size": "1:1",
+      "resolution": "1K",
+      "quality": "low"
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0,
+      "quality": "low"
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gpt-image-2.5-flare": {
+    "model": "gpt-image-2.5-flare",
+    "kind": "image",
+    "request": {
+      "model": "gpt-image-2.5-flare",
+      "n": 1,
+      "size": "1:1",
+      "metadata": {
+        "resolution": "1K"
+      },
+      "quality": "high"
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0,
+      "quality": "high"
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gpt-image-2.5-flare-vip": {
+    "model": "gpt-image-2.5-flare-vip",
+    "kind": "image",
+    "request": {
+      "model": "gpt-image-2.5-flare-vip",
+      "quality": "low",
+      "size": "1024x1024",
+      "n": 1
+    },
+    "pricing_conditions": {
+      "resolution": "1024x1024",
+      "n": 1,
+      "input_image_count": 0,
+      "quality": "low"
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "unavailable"
+  },
+  "gpt-image-2.5-sunburst": {
+    "model": "gpt-image-2.5-sunburst",
+    "kind": "image",
+    "request": {
+      "model": "gpt-image-2.5-sunburst",
+      "size": "1:1",
+      "n": 1,
+      "resolution": "1K",
+      "quality": "high"
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0,
+      "quality": "high"
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "gpt-image-2.5-sunburst-vip": {
+    "model": "gpt-image-2.5-sunburst-vip",
+    "kind": "image",
+    "request": {
+      "model": "gpt-image-2.5-sunburst-vip",
+      "quality": "low",
+      "size": "1024x1024",
+      "n": 1
+    },
+    "pricing_conditions": {
+      "resolution": "1024x1024",
+      "n": 1,
+      "input_image_count": 0,
+      "quality": "low"
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "unavailable"
+  },
+  "nano_banana": {
+    "model": "nano_banana",
+    "kind": "image",
+    "request": {
+      "model": "nano_banana",
+      "n": 1,
+      "size": "1:1",
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "nano_banana_2": {
+    "model": "nano_banana_2",
+    "kind": "image",
+    "request": {
+      "model": "nano_banana_2",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "nano_banana_pro": {
+    "model": "nano_banana_pro",
+    "kind": "image",
+    "request": {
+      "model": "nano_banana_pro",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "qwen-image-3.0": {
+    "model": "qwen-image-3.0",
+    "kind": "image",
+    "request": {
+      "model": "qwen-image-3.0",
+      "size": "1:1",
+      "n": 1,
+      "resolution": "1K"
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "unavailable"
+  },
+  "qwen-image-3.0-pro": {
+    "model": "qwen-image-3.0-pro",
+    "kind": "image",
+    "request": {
+      "model": "qwen-image-3.0-pro",
+      "size": "1:1",
+      "n": 1,
+      "resolution": "1K"
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "unavailable"
+  },
+  "vidu-image": {
+    "model": "vidu-image",
+    "kind": "image",
+    "request": {
+      "model": "vidu-image",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "viduq2-fast": {
+    "model": "viduq2-fast",
+    "kind": "image",
+    "request": {
+      "model": "viduq2-fast",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "viduq2-pro": {
+    "model": "viduq2-pro",
+    "kind": "image",
+    "request": {
+      "model": "viduq2-pro",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "viduq3-fast": {
+    "model": "viduq3-fast",
+    "kind": "image",
+    "request": {
+      "model": "viduq3-fast",
+      "size": "1:1",
+      "n": 1,
+      "metadata": {
+        "resolution": "1K"
+      }
+    },
+    "pricing_conditions": {
+      "resolution": "1K",
+      "n": 1,
+      "input_image_count": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "available"
+  },
+  "seedance-2-mini": {
+    "model": "seedance-2-mini",
+    "kind": "video",
+    "request": {
+      "model": "seedance-2-mini",
+      "duration": 4,
+      "resolution": "480p",
+      "aspect_ratio": "16:9",
+      "generate_audio": false
+    },
+    "pricing_conditions": {
+      "duration": 4,
+      "resolution": "480p",
+      "has_video_input": false,
+      "has_image_input": true,
+      "has_audio_input": false,
+      "input_image_count": 1,
+      "output_format": "mp4",
+      "generate_audio": false
+    },
+    "needs_image": true,
+    "historical_api_success": true,
+    "current_pricing_status": "query_on_run"
+  },
+  "seedance-2": {
+    "model": "seedance-2",
+    "kind": "video",
+    "request": {
+      "model": "seedance-2",
+      "duration": 4,
+      "resolution": "480p",
+      "aspect_ratio": "16:9",
+      "generate_audio": false
+    },
+    "pricing_conditions": {
+      "duration": 4,
+      "resolution": "480p",
+      "has_video_input": false,
+      "has_image_input": true,
+      "has_audio_input": false,
+      "input_image_count": 1,
+      "output_format": "mp4",
+      "generate_audio": false
+    },
+    "needs_image": true,
+    "historical_api_success": true,
+    "current_pricing_status": "query_on_run"
+  },
+  "seedance-2-5": {
+    "model": "seedance-2-5",
+    "kind": "video",
+    "request": {
+      "model": "seedance-2-5",
+      "duration": 4,
+      "resolution": "480p",
+      "aspect_ratio": "16:9",
+      "generate_audio": false,
+      "output_format": "mp4"
+    },
+    "pricing_conditions": {
+      "duration": "-1",
+      "resolution": "480p",
+      "has_video_input": false,
+      "has_image_input": false,
+      "has_audio_input": false,
+      "input_image_count": 0,
+      "output_format": "mp4",
+      "generate_audio": false
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "query_on_run"
+  },
+  "MiniMax-H3": {
+    "model": "MiniMax-H3",
+    "kind": "video",
+    "request": {
+      "model": "MiniMax-H3",
+      "duration": 5,
+      "resolution": "768p",
+      "aspect_ratio": "16:9"
+    },
+    "pricing_conditions": {
+      "duration": 5,
+      "resolution": "768p",
+      "input_image_count": 0,
+      "input_video_duration_seconds": 0
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "query_on_run"
+  },
+  "kling-3.0-turbo": {
+    "model": "kling-3.0-turbo",
+    "kind": "video",
+    "request": {
+      "model": "kling-3.0-turbo",
+      "duration": 4,
+      "resolution": "720p",
+      "aspect_ratio": "16:9",
+      "watermark": false
+    },
+    "pricing_conditions": {
+      "duration": 4,
+      "resolution": "720p",
+      "has_image_input": false
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "query_on_run"
+  },
+  "seedance-2-fast": {
+    "model": "seedance-2-fast",
+    "kind": "video",
+    "request": {
+      "model": "seedance-2-fast",
+      "duration": 4,
+      "resolution": "480p",
+      "aspect_ratio": "16:9",
+      "generate_audio": false
+    },
+    "pricing_conditions": {
+      "duration": 4,
+      "resolution": "480p",
+      "has_video_input": false
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "query_on_run"
+  },
+  "MiniMax-H3-Max-Turbo": {
+    "model": "MiniMax-H3-Max-Turbo",
+    "kind": "video",
+    "request": {
+      "model": "MiniMax-H3-Max-Turbo",
+      "duration": 5,
+      "resolution": "480P",
+      "aspect_ratio": "16:9"
+    },
+    "pricing_conditions": {
+      "duration": 5,
+      "resolution": "480P"
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "query_on_run"
+  },
+  "kling-v3": {
+    "model": "kling-v3",
+    "kind": "video",
+    "request": {
+      "model": "kling-v3",
+      "duration": 5,
+      "mode": "std",
+      "aspect_ratio": "16:9",
+      "audio": false
+    },
+    "pricing_conditions": {
+      "duration": 5,
+      "mode": "std",
+      "audio": false,
+      "capability": "text2video",
+      "has_video_input": false
+    },
+    "needs_image": false,
+    "historical_api_success": true,
+    "current_pricing_status": "query_on_run"
+  }
+}
