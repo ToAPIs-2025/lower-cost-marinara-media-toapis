@@ -1,5 +1,26 @@
 # ToAPIs · 更低成本的 Marinara Engine 图片与视频素材方案
 
+## 接入提案调用链已实测 · 2026-10-20
+
+已完成 **场景图生成 → 上传 URL 参考图编辑 → 首帧视频** 的真实外部 API 调用。新增[可运行脚本](verify_marinara_flow.py)、[协议映射说明](integration/proposed-media-contract.md)及[脱敏验证结果](evidence/marinara-contract-2026-10-20.json)，对应提案里的两个模型。
+
+| 环节 | 模型／请求配置 | 实际结果 | 费用依据 |
+| --- | --- | --- | --- |
+| 文生图 | gpt-image-2／1k／16:9 | [PNG，1696×960](examples/verified-2026-10-20/scene.png) | 当前报价 $0.015/张；单任务结算未返回 |
+| URL 参考图编辑 | gpt-image-2／1k／16:9／一张已上传参考图 | [PNG，1696×960](examples/verified-2026-10-20/reference-edit.png) | 当前报价 $0.015/张；单任务结算未返回 |
+| 首帧动画 | seedance-2-mini／4 秒／480p 档／关闭音频 | [MP4，4.04 秒，864×496，97 帧完整解码](examples/verified-2026-10-20/first-frame-mini.mp4) | 已结算 $0.13338；本例 $0.033015/秒 |
+
+分辨率和宽高比为请求档位，实际文件尺寸单列如上。视频费用已确认；两张图片的报价不能冒充最终实扣。视频每秒金额仅为本案例折算，并非固定秒价。
+
+```bash
+# 先在私有环境变量中设置 TOAPIS_API_KEY。
+python verify_marinara_flow.py --max-usd 0.50
+# 只有显式加上 --live 才会创建付费任务：
+python verify_marinara_flow.py --max-usd 0.50 --live
+```
+
+离线检查 13 项通过。**Marinara 原生 Provider 注册、Gallery 导入、Test Image/Test Video 和应用内播放尚未验收。** 已有 OpenAI／Seedance 服务的协议不同，不能只更换 Base URL 就称为接入成功。
+
 
 <!-- TOAPIS-MODELS-20261020 -->
 ## 模型与价格更新 · 2026-10-20
@@ -89,4 +110,3 @@ python bridge.py
 ```text
 Cinematic 16:9 fantasy role-playing game scene illustration, an empty moonlit alchemist workshop in a coastal tower, brass instruments, blue glass bottles, an open star chart on a wooden desk, a candle, ocean visible through an arched window, painterly realism, calm atmospheric worldbuilding, no characters, no text, no watermark.
 ```
-

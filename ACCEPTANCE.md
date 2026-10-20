@@ -1,5 +1,15 @@
 # Validation boundary
 
+## Proposal workflow verified on 2026-10-20
+
+- Actual `gpt-image-2` text-to-image and URL-reference edit completed; both PNGs decoded at 1696×960.
+- Actual `seedance-2-mini` first-frame video completed and fully decoded: 97 frames, 4.04 seconds, 864×496. Requested configuration was 4 seconds / 480p / 16:9 / audio off; presets do not guarantee exact file dimensions.
+- Video task billing settled at $0.13338. Each image has a current $0.015 quote but no confirmed task billing.
+- 13 offline tests passed, including request mapping, quote-only behavior, total forecast guard, failure stopping dependent tasks, and reference upload validation/cache.
+- Native provider registration, Test Image/Test Video, Gallery import, Scene Video routing and in-app playback remain pending.
+
+See [sanitized evidence](evidence/marinara-contract-2026-10-20.json) and [protocol mapping](integration/proposed-media-contract.md). The historical checks below retain their original scope.
+
 Optional image/scene-video API bridge; adult non-explicit fantasy environment example, full app pending
 
 # Marinara Engine reuse recipe
@@ -18,5 +28,5 @@ This is a ToAPIs-operated independent guide and is not affiliated with, endorsed
 
 - Completed: three original image files, matching prompt/jobs, actual dimensions and PNG signatures; Key-scoped rate lookup; durable submission state; unsupported parameter rejection.
 - Completed where video is included: decoded MP4, first-frame input, actual duration, settled task fee and case USD/s.
-- Pending: full upstream app UI/runtime, package installation matrix, canvas/Matrix/gallery interactions, editing/masks, cancellation and concurrent multi-user deployment.
+- Pending: full upstream app UI/runtime, package installation matrix, canvas/Matrix/gallery interactions, masks/inpainting, cancellation and concurrent multi-user deployment. URL-reference editing is verified externally by the separate proposal workflow above.
 - Missing billing is not zero cost. Model/time-window log batches are not individual task-settlement proof.

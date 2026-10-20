@@ -1,5 +1,26 @@
 # ToAPIs · Lower-cost Marinara Engine media guide
 
+## Verified proposal workflow · 2026-10-20
+
+The proposed external API chain has now completed: **scene image → uploaded URL reference edit → first-frame video**. The runnable [verification script](verify_marinara_flow.py), [protocol mapping](integration/proposed-media-contract.md), and [sanitized evidence](evidence/marinara-contract-2026-10-20.json) use the two models named in the proposed integration.
+
+| Stage | Model / requested configuration | Result | Fee evidence |
+| --- | --- | --- | --- |
+| Text-to-image | gpt-image-2 / 1k / 16:9 | [PNG, 1696×960](examples/verified-2026-10-20/scene.png) | Current quote $0.015/image; task billing unavailable |
+| URL-reference edit | gpt-image-2 / 1k / 16:9 / one uploaded reference | [PNG, 1696×960](examples/verified-2026-10-20/reference-edit.png) | Current quote $0.015/image; task billing unavailable |
+| First-frame animation | seedance-2-mini / 4s / 480p tier / audio off | [MP4, 4.04s, 864×496, 97 decoded frames](examples/verified-2026-10-20/first-frame-mini.mp4) | Task settled $0.13338; this clip $0.033015/s |
+
+The resolution/aspect-ratio fields are requested presets; actual file dimensions are shown above. The video fee is confirmed, while the two image quotes are not final net charges. The case USD/s is a conversion for this clip, not a fixed video tariff.
+
+```bash
+# Set TOAPIS_API_KEY privately in your environment first.
+python verify_marinara_flow.py --max-usd 0.50
+# Only this explicit flag submits paid tasks:
+python verify_marinara_flow.py --max-usd 0.50 --live
+```
+
+Offline verification: 13 tests passed. **Native Marinara provider registration, Gallery import, Test Image/Test Video and in-app playback remain unverified.** Existing OpenAI/Seedance service contracts differ, so this is not a claim that changing their Base URL enables ToAPIs.
+
 
 <!-- TOAPIS-MODELS-20261020 -->
 ## Model support and prices · 2026-10-20
@@ -72,7 +93,7 @@ Seedance token rates and case USD/s have different units. The clip fee excludes 
 
 ## Reuse
 
-Python 3.10+; Node.js 22+ only for the optional MCP Image client. Copy `.env.example` to a private `.env`, configure your Key and a separate random local bridge token of at least 24 characters. Keep both private.
+Python 3.10+ for the standalone API examples. Copy `.env.example` to a private `.env`, configure your Key and a separate random local bridge token of at least 24 characters if using the optional bridge. Keep both private.
 
 ```bash
 python run_case.py --job jobs/gpt-image-2-vip.json

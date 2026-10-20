@@ -1,0 +1,89 @@
+{
+  "verified_on": "2026-10-20",
+  "scope": "independent external ToAPIs API workflow",
+  "native_marinara_verified": false,
+  "upstream_main": "c56501495a8baf76c258e76534c8728a9b7859bb",
+  "stages": [
+    {
+      "stage": "text_to_image",
+      "model": "gpt-image-2",
+      "status": "completed",
+      "asset": "examples/verified-2026-10-20/scene.png",
+      "asset_sha256": "b72d21c3aee86db67ca255e305bb89d73cff737b5ded640d3f71832aa81ca3f8",
+      "bytes": 2669493,
+      "dimensions": [
+        1696,
+        960
+      ],
+      "format": "PNG",
+      "decode_verified": true,
+      "billing_status": "unavailable",
+      "actual_cost_usd": null,
+      "request": {
+        "size": "16:9",
+        "resolution": "1k",
+        "n": 1,
+        "reference_image_count": 0
+      },
+      "quoted_usd_per_image": "0.015"
+    },
+    {
+      "stage": "reference_image_edit",
+      "model": "gpt-image-2",
+      "status": "completed",
+      "asset": "examples/verified-2026-10-20/reference-edit.png",
+      "asset_sha256": "23fe2955078c379f26c0fa7d10acf613f0569ab70011dca8e45cd09e389a0b70",
+      "bytes": 2169783,
+      "dimensions": [
+        1696,
+        960
+      ],
+      "format": "PNG",
+      "decode_verified": true,
+      "billing_status": "unavailable",
+      "actual_cost_usd": null,
+      "request": {
+        "size": "16:9",
+        "resolution": "1k",
+        "n": 1,
+        "reference_image_count": 1
+      },
+      "quoted_usd_per_image": "0.015"
+    },
+    {
+      "stage": "first_frame_video",
+      "model": "seedance-2-mini",
+      "status": "completed",
+      "asset": "examples/verified-2026-10-20/first-frame-mini.mp4",
+      "asset_sha256": "1cd49132363660b07734400826b757531e4310200fe773162f544b3cf5b35231",
+      "bytes": 1684148,
+      "dimensions": [
+        864,
+        496
+      ],
+      "duration_seconds": 4.04,
+      "fps": 24.0,
+      "decoded_frames": 97,
+      "decode_verified": true,
+      "frames_change": true,
+      "audio_codec": null,
+      "billing_status": "settled",
+      "actual_cost_usd": "0.13338",
+      "request": {
+        "duration": 4,
+        "resolution": "480p",
+        "aspect_ratio": "16:9",
+        "generate_audio": false,
+        "image_with_roles": [
+          {
+            "role": "first_frame",
+            "url": "<uploaded edited scene>"
+          }
+        ]
+      },
+      "case_usd_per_second": "0.03301485148514851485148514851"
+    }
+  ],
+  "offline_tests_passed": 13,
+  "fee_note": "Quoted image prices are not confirmed final net charges; video cost is final only when billing_status is settled."
+}
