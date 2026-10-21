@@ -1,0 +1,762 @@
+diff --git a/e2e/toapis-roleplay-video.e2e.ts b/e2e/toapis-roleplay-video.e2e.ts
+new file mode 100644
+index 0000000..225691f
+--- /dev/null
++++ b/e2e/toapis-roleplay-video.e2e.ts
+@@ -0,0 +1,66 @@
++import { expect, test } from "@playwright/test";
++import { seedUIState } from "./ui-state-fixture.js";
++import { chatSettingsDrawer, openChatSettingsTool } from "./chat-settings-tools.js";
++
++test("Roleplay can animate an existing image without Illustrator when a video connection is configured", async ({
++  page,
++  request,
++}) => {
++  const videoResponse = await request.post("/api/connections/", {
++    data: {
++      name: "ToAPIs visibility fixture",
++      provider: "video_generation",
++      baseUrl: "https://toapis.cn/v1",
++      apiKey: "fixture-only-not-a-real-key",
++      model: "seedance-2-mini",
++      videoService: "seedance",
++      videoGenerationSource: "seedance",
++    },
++  });
++  expect(videoResponse.ok()).toBeTruthy();
++  const connection = await videoResponse.json();
++  const chatResponse = await request.post("/api/chats", {
++    data: { name: "Roleplay media visibility", mode: "roleplay", characterIds: [] },
++  });
++  expect(chatResponse.ok()).toBeTruthy();
++  const chat = await chatResponse.json();
++  const png = Buffer.from(
++    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
++    "base64",
++  );
++  await request.post(`/api/gallery/${chat.id}/upload`, {
++    multipart: { file: { name: "fixture.png", mimeType: "image/png", buffer: png } },
++  });
++  await request.patch(`/api/chats/${chat.id}/metadata`, {
++    data: { sceneVideoConnectionId: connection.id, enableAgents: false, activeAgentIds: [] },
++  });
++  // Verify the condition with no installed agent, without calling any media API.
++  await page.route("**/api/capability-packages/installed", (route) => route.fulfill({ json: [] }));
++  await page.route("**/api/capability-packages/agents", (route) => route.fulfill({ json: [] }));
++  await seedUIState(page, {
++    hasCompletedOnboarding: true,
++    chatHelpSeenModes: ["roleplay"],
++    rightPanelOpen: false,
++    sidebarOpen: false,
++  });
++  await page.addInitScript((id: string) => {
++    localStorage.setItem("marinara-active-chat-id", id);
++    localStorage.setItem("marinara:whats-new:seen-version", "2.5.1");
++  }, chat.id);
++  try {
++    await page.goto("/");
++    await openChatSettingsTool(page, "gallery");
++    const gallery = chatSettingsDrawer(page, "gallery");
++    await expect(gallery.getByRole("button", { name: "Video", exact: true })).toBeVisible();
++    await expect(gallery.getByRole("button", { name: "Animate gallery illustration", exact: true })).toHaveCount(1);
++    await expect(gallery.getByRole("button", { name: "Illustrate", exact: true })).toHaveCount(0);
++    await request.patch(`/api/chats/${chat.id}/metadata`, { data: { sceneVideoConnectionId: null } });
++    await page.reload();
++    await openChatSettingsTool(page, "gallery");
++    await expect(gallery.getByRole("button", { name: "Video", exact: true })).toHaveCount(0);
++    await expect(gallery.getByRole("button", { name: "Animate gallery illustration", exact: true })).toHaveCount(0);
++  } finally {
++    await request.delete(`/api/chats/${chat.id}`);
++    await request.delete(`/api/connections/${connection.id}`);
++  }
++});
+diff --git a/packages/client/src/components/chat/ChatGalleryPanel.tsx b/packages/client/src/components/chat/ChatGalleryPanel.tsx
+index d85c4e7..5b71e10 100644
+--- a/packages/client/src/components/chat/ChatGalleryPanel.tsx
++++ b/packages/client/src/components/chat/ChatGalleryPanel.tsx
+@@ -53,7 +53,14 @@ export function ChatGalleryPanel({ chat }: { chat: Chat }) {
+         : chatMetadata.enableAgents === true && chatMetadata.activeAgentIds?.includes("illustrator");
+   const illustratorAvailable = illustratorInstalled && illustratorEnabledForChat;
+   // Conversation video messages don't need selfies: their First frame can be the avatar or no picture.
+-  const videoAvailable = chat.mode === "conversation" ? illustratorInstalled : illustratorAvailable;
++  // A Roleplay scene video uses the configured video connection and text Prompt Model.
++  // Animating an existing gallery image does not require the Illustrator package.
++  const roleplayVideoConfigured =
++    chat.mode === "roleplay" &&
++    typeof chatMetadata.sceneVideoConnectionId === "string" &&
++    Boolean(chatMetadata.sceneVideoConnectionId.trim());
++  const videoAvailable =
++    roleplayVideoConfigured || (chat.mode === "conversation" ? illustratorInstalled : illustratorAvailable);
+   // Roleplay Illustrate and Background are one-off runs: an installed Illustrator need not be added to the chat.
+   const manualIllustratorAvailable = illustratorInstalled && (chat.mode === "roleplay" || illustratorEnabledForChat);
+   const customImageAgents = useMemo(() => {
+diff --git a/packages/server/src/services/image/image-generation.ts b/packages/server/src/services/image/image-generation.ts
+index 5cfd1f4..3b52cfb 100644
+--- a/packages/server/src/services/image/image-generation.ts
++++ b/packages/server/src/services/image/image-generation.ts
+@@ -1,3 +1,4 @@
++import { isToAPIsMediaUrl, generateToAPIsImage } from "../media/toapis-media.js";
+ // ──────────────────────────────────────────────
+ // Service: Image Generation
+ // ──────────────────────────────────────────────
+@@ -1312,6 +1313,14 @@ function applyImageCustomFormParameters(request: ImageGenRequest, body: FormData
+ }
+ 
+ async function generateOpenAI(baseUrl: string, apiKey: string, request: ImageGenRequest): Promise<ImageGenResult> {
++  if (isToAPIsMediaUrl(baseUrl)) {
++    return generateToAPIsImage(
++      baseUrl,
++      apiKey,
++      { ...request, prompt: openAITextPrompt(request) },
++      openAIReferenceImages(request).map(decodeReferenceImage),
++    );
++  }
+   const usesGptImageApi = isOpenAIGptImageModel(request.model);
+   const references = openAIReferenceImages(request);
+   const prompt = openAITextPrompt(request);
+diff --git a/packages/server/src/services/media/toapis-media.ts b/packages/server/src/services/media/toapis-media.ts
+new file mode 100644
+index 0000000..b55a034
+--- /dev/null
++++ b/packages/server/src/services/media/toapis-media.ts
+@@ -0,0 +1,267 @@
++// ToAPIs asynchronous media for the existing OpenAI-image and Seedance connections.
++// This is a local compatibility patch, not an upstream provider endorsement.
++import { randomUUID } from "node:crypto";
++import { mkdir, writeFile } from "node:fs/promises";
++import { join } from "node:path";
++import { setTimeout as delay } from "node:timers/promises";
++import type {
++  ImageGenRequest,
++  ImageGenResult,
++  VideoGenerationRequest,
++  VideoGenerationResult,
++} from "@marinara-engine/shared";
++import { isDebugAgentsEnabled } from "../../config/runtime-config.js";
++import { DATA_DIR } from "../../utils/data-dir.js";
++import { safeFetch, resolveValidatedImage } from "../../utils/security.js";
++import { logDebugOverride } from "../../lib/logger.js";
++
++export function isToAPIsMediaUrl(baseUrl: string): boolean {
++  try {
++    const u = new URL(baseUrl);
++    return (
++      u.protocol === "https:" &&
++      ["toapis.com", "toapis.cn"].includes(u.hostname) &&
++      !u.username &&
++      !u.password &&
++      !u.port &&
++      !u.search &&
++      !u.hash &&
++      /^\/(?:v1\/?)?$/.test(u.pathname)
++    );
++  } catch {
++    return false;
++  }
++}
++
++function apiUrl(base: string, path: string): string {
++  if (!isToAPIsMediaUrl(base)) throw new Error("Use an HTTPS ToAPIs origin or /v1 base URL");
++  return `${new URL(base).origin}/v1/${path}`;
++}
++
++const policy = { allowLocal: false, allowLoopback: false, allowMdns: false, allowedProtocols: ["https:"] };
++type Task = { id?: string; status?: string; result?: { data?: Array<{ url?: string }> }; data?: { url?: string } };
++async function api(
++  base: string,
++  key: string,
++  path: string,
++  body?: Record<string, unknown> | FormData,
++  signal?: AbortSignal,
++): Promise<Task> {
++  signal?.throwIfAborted();
++  const response = await safeFetch(apiUrl(base, path), {
++    method: body ? "POST" : "GET",
++    headers: {
++      Authorization: `Bearer ${key}`,
++      ...(body instanceof FormData ? {} : { "Content-Type": "application/json" }),
++    },
++    body: body instanceof FormData ? body : body ? JSON.stringify(body) : undefined,
++    signal,
++    policy,
++    maxResponseBytes: 2 * 1024 * 1024,
++    decodeCompressedResponse: true,
++  });
++  if (!response.ok) {
++    await response.body?.cancel();
++    throw new Error(`ToAPIs ${path.split("/")[0]} HTTP ${response.status}`);
++  }
++  return (await response.json()) as Task;
++}
++
++function referenceBytes(base64: string, declaredType: string): Buffer {
++  const encoded = base64.replace(/^data:[^,]+,/, "").replace(/\s/g, "");
++  if (!encoded || !/^[A-Za-z0-9+/]+={0,2}$/.test(encoded) || encoded.length % 4 === 1)
++    throw new Error("Invalid reference image base64");
++  const bytes = Buffer.from(encoded, "base64");
++  const info = resolveValidatedImage(bytes);
++  if (
++    !info ||
++    info.mimeType !== declaredType ||
++    !["image/png", "image/jpeg", "image/webp", "image/gif"].includes(info.mimeType) ||
++    bytes.length > 10 * 1024 * 1024
++  ) {
++    throw new Error("Reference must be a PNG, JPEG, WebP or GIF of at most 10 MiB, with matching MIME type");
++  }
++  return bytes;
++}
++
++async function upload(
++  base: string,
++  key: string,
++  bytes: Buffer,
++  mimeType: string,
++  signal?: AbortSignal,
++): Promise<string> {
++  const form = new FormData();
++  form.append(
++    "file",
++    new Blob([new Uint8Array(bytes)], { type: mimeType }),
++    "reference." + (mimeType === "image/jpeg" ? "jpg" : mimeType.split("/")[1]),
++  );
++  const result = await api(base, key, "uploads/images", form, signal);
++  const url = result.data?.url;
++  if (!url || new URL(url).protocol !== "https:") throw new Error("ToAPIs upload did not return an HTTPS URL");
++  return url;
++}
++
++async function runTask(
++  base: string,
++  key: string,
++  kind: "images" | "videos",
++  body: Record<string, unknown>,
++  signal?: AbortSignal,
++): Promise<string> {
++  const localId = randomUUID();
++  const dir = join(DATA_DIR, "toapis-tasks");
++  await mkdir(dir, { recursive: true });
++  // Keep the receipt across UI timeouts. Never automatically repeat a task POST.
++  const receipt = { localId, kind, model: body.model, origin: new URL(base).origin, taskId: "", status: "submitting" };
++  const path = join(dir, `${localId}.json`);
++  const save = () => writeFile(path, JSON.stringify(receipt, null, 2), { mode: 0o600 });
++  await save();
++  let task: Task;
++  try {
++    task = await api(base, key, `${kind}/generations`, body, signal);
++  } catch {
++    receipt.status = "submission_uncertain";
++    await save();
++    throw new Error(`ToAPIs submission unconfirmed. Inspect local receipt ${localId}; do not automatically resubmit.`);
++  }
++  receipt.taskId = typeof task.id === "string" ? task.id : "";
++  receipt.status = task.status || "submitted";
++  await save();
++  if (!receipt.taskId)
++    throw new Error(`ToAPIs returned no task ID. Reconcile local receipt ${localId} before resubmitting.`);
++  try {
++    while (true) {
++      signal?.throwIfAborted();
++      if (task.status === "completed") {
++        const url = task.result?.data?.[0]?.url;
++        if (!url || new URL(url).protocol !== "https:") throw new Error("ToAPIs completed without an HTTPS media URL");
++        return url;
++      }
++      if (["failed", "cancelled", "canceled", "expired"].includes(task.status || ""))
++        throw new Error(`ToAPIs task ${task.status}; no replacement task submitted`);
++      const interval = Number(process.env.TOAPIS_POLL_INTERVAL_MS || 5000);
++      await delay(Number.isFinite(interval) && interval > 0 ? interval : 5000, undefined, { signal });
++      task = await api(base, key, `${kind}/generations/${encodeURIComponent(receipt.taskId)}`, undefined, signal);
++      receipt.status = task.status || "unknown";
++      await save();
++    }
++  } catch (error) {
++    if (!["failed", "cancelled", "canceled", "expired", "completed"].includes(receipt.status)) {
++      receipt.status = "interrupted";
++      await save();
++    }
++    throw error;
++  }
++}
++
++async function download(url: string, signal?: AbortSignal): Promise<Buffer> {
++  const response = await safeFetch(url, {
++    signal,
++    policy,
++    maxResponseBytes: 160 * 1024 * 1024,
++    decodeCompressedResponse: true,
++  });
++  // Provider credentials are deliberately never forwarded to media storage.
++  if (!response.ok) {
++    await response.body?.cancel();
++    throw new Error(`ToAPIs media download HTTP ${response.status}`);
++  }
++  return Buffer.from(await response.arrayBuffer());
++}
++
++export async function generateToAPIsImage(
++  base: string,
++  key: string,
++  request: ImageGenRequest,
++  references: Array<{ base64: string; mimeType: string }>,
++): Promise<ImageGenResult> {
++  if (!key.trim()) throw new Error("ToAPIs API key is required");
++  if (request.model !== "gpt-image-2")
++    throw new Error("This ToAPIs adapter currently supports ordinary gpt-image-2 only");
++  if (!request.prompt.trim()) throw new Error("ToAPIs image prompt is required");
++  if (request.transparentBackground) throw new Error("Transparent backgrounds are not verified by this ToAPIs adapter");
++  if (request.quality && request.quality !== "auto")
++    throw new Error("Leave ToAPIs image quality at Auto; this adapter uses the verified 1k preset");
++  if (request.imageDefaults?.customParameters && Object.keys(request.imageDefaults.customParameters).length)
++    throw new Error("ToAPIs custom image parameters are not mapped");
++  const w = request.width ?? 1024,
++    h = request.height ?? 1024;
++  if (!Number.isFinite(w) || !Number.isFinite(h) || w <= 0 || h <= 0)
++    throw new Error("Positive image dimensions are required");
++  // ponytail: support exact common ratios only; extend after contract verification.
++  const ratios = [
++    ["1:1", 1],
++    ["16:9", 16 / 9],
++    ["9:16", 9 / 16],
++    ["3:2", 1.5],
++    ["2:3", 2 / 3],
++  ] as const;
++  const ratio = ratios.find(([, value]) => Math.abs(w / h - value) < 0.025)?.[0];
++  if (!ratio) throw new Error("ToAPIs adapter supports 1:1, 16:9, 9:16, 3:2 and 2:3 image ratios");
++  if (references.length > 1) throw new Error("This ToAPIs adapter currently supports one reference image");
++  const validated = references.map((ref) => ({ ...ref, bytes: referenceBytes(ref.base64, ref.mimeType) }));
++  const body: Record<string, unknown> = {
++    model: request.model,
++    prompt: request.prompt,
++    size: ratio,
++    resolution: "1k",
++    n: 1,
++  };
++  if (validated.length)
++    body.reference_images = [await upload(base, key, validated[0]!.bytes, validated[0]!.mimeType, request.signal)];
++  logDebugOverride(
++    request.debugMode === true || isDebugAgentsEnabled(),
++    "[image-gen/toapis] prompt: %s",
++    request.prompt,
++  );
++  const raw = await download(await runTask(base, key, "images", body, request.signal), request.signal);
++  const info = resolveValidatedImage(raw);
++  if (!info) throw new Error("ToAPIs returned an invalid image payload");
++  const ext = info.mimeType === "image/jpeg" ? "jpg" : info.mimeType.split("/")[1]!;
++  return { base64: raw.toString("base64"), mimeType: info.mimeType, ext };
++}
++
++export async function generateToAPIsVideo(
++  base: string,
++  key: string,
++  request: VideoGenerationRequest,
++): Promise<VideoGenerationResult> {
++  if (!key.trim()) throw new Error("ToAPIs API key is required");
++  if (request.model !== "seedance-2-mini")
++    throw new Error("This ToAPIs adapter currently supports seedance-2-mini only");
++  if (!request.prompt.trim()) throw new Error("ToAPIs video prompt is required");
++  if (!Number.isInteger(request.durationSeconds) || request.durationSeconds < 4 || request.durationSeconds > 15)
++    throw new Error("ToAPIs duration must be an integer from 4 to 15 seconds");
++  if (
++    !["480p", "720p", "1080p"].includes(request.resolution || "480p") ||
++    !["16:9", "9:16"].includes(request.aspectRatio)
++  )
++    throw new Error("Unsupported ToAPIs video dimensions");
++  if (request.lastFrameImage) throw new Error("Last-frame input is not verified by this ToAPIs adapter");
++  const body: Record<string, unknown> = {
++    model: request.model,
++    prompt: request.prompt,
++    duration: request.durationSeconds,
++    resolution: request.resolution || "480p",
++    aspect_ratio: request.aspectRatio,
++    generate_audio: false,
++  };
++  if (request.referenceImage) {
++    const ref = request.referenceImage;
++    const bytes = referenceBytes(ref.base64, ref.mimeType);
++    body.image_with_roles = [
++      { url: await upload(base, key, bytes, ref.mimeType, request.signal), role: "first_frame" },
++    ];
++  }
++  logDebugOverride(
++    request.debugMode === true || isDebugAgentsEnabled(),
++    "[video-gen/toapis] prompt: %s",
++    request.prompt,
++  );
++  const raw = await download(await runTask(base, key, "videos", body, request.signal), request.signal);
++  if (raw.length < 12 || raw.subarray(4, 8).toString("ascii") !== "ftyp")
++    throw new Error("ToAPIs returned a non-MP4 payload");
++  return { base64: raw.toString("base64"), mimeType: "video/mp4", ext: "mp4" };
++}
+diff --git a/packages/server/src/services/video/video-generation.ts b/packages/server/src/services/video/video-generation.ts
+index a50e85c..e113afe 100644
+--- a/packages/server/src/services/video/video-generation.ts
++++ b/packages/server/src/services/video/video-generation.ts
+@@ -1,3 +1,4 @@
++import { isToAPIsMediaUrl, generateToAPIsVideo } from "../media/toapis-media.js";
+ import { mkdir, rename, unlink, writeFile } from "fs/promises";
+ import { join } from "path";
+ import { isDebugAgentsEnabled } from "../../config/runtime-config.js";
+@@ -1290,6 +1291,7 @@ async function generateSeedanceVideo(
+   apiKey: string,
+   request: VideoGenerationRequest,
+ ): Promise<VideoGenerationResult> {
++  if (isToAPIsMediaUrl(baseUrl)) return generateToAPIsVideo(baseUrl, apiKey, request);
+   if (!apiKey.trim()) throw new Error("Seedance video generation requires a Seedance API key");
+   const model = request.model?.trim() || DEFAULT_SEEDANCE_VIDEO_MODEL;
+   const startUrl = buildSeedanceUrl(baseUrl, "v1/videos/generations");
+diff --git a/scripts/regressions/toapis-media.regression.ts b/scripts/regressions/toapis-media.regression.ts
+new file mode 100644
+index 0000000..99ad91e
+--- /dev/null
++++ b/scripts/regressions/toapis-media.regression.ts
+@@ -0,0 +1,350 @@
++import assert from "node:assert/strict";
++import { promises as dns } from "node:dns";
++import { readdir, readFile } from "node:fs/promises";
++import { join } from "node:path";
++
++// All HTTP and DNS are fixtures: no live API, pricing query, upload or paid task.
++process.env.TOAPIS_POLL_INTERVAL_MS = "1";
++const originalFetch = globalThis.fetch;
++const originalLookup = dns.lookup;
++dns.lookup = (async () => [{ address: "8.8.8.8", family: 4 }]) as typeof dns.lookup;
++const png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
++const mp4 = Buffer.from("000000186674797069736f6d0000020069736f6d6d703432", "hex");
++type Call = { url: string; method: string; headers: Headers; body: unknown };
++let calls: Call[] = [];
++let mode = "complete";
++const json = (value: unknown, status = 200) =>
++  new Response(JSON.stringify(value), { status, headers: { "Content-Type": "application/json" } });
++globalThis.fetch = async (input, init) => {
++  const url = new URL(String(input));
++  const body = typeof init?.body === "string" ? JSON.parse(init.body) : init?.body;
++  calls.push({ url: url.href, method: init?.method || "GET", headers: new Headers(init?.headers), body });
++  if (url.hostname === "media.toapis.com") {
++    assert.equal(new Headers(init?.headers).has("Authorization"), false, "Never leak Key to storage");
++    return new Response(
++      mode === "bad-media"
++        ? Buffer.from("not media")
++        : url.pathname.endsWith(".png")
++          ? Buffer.from(png, "base64")
++          : mp4,
++    );
++  }
++  assert.ok(
++    ["toapis.com", "toapis.cn", "api.openai.com", "api.seedance2.ai"].includes(url.hostname),
++    "Unexpected network destination",
++  );
++  if (url.hostname === "api.openai.com") return json({ data: [{ b64_json: png }] });
++  if (url.hostname === "api.seedance2.ai") {
++    if (init?.method === "POST") return json({ taskId: "legacy" });
++    return json({ status: "completed", output: { url: "https://media.toapis.com/legacy.mp4" } });
++  }
++  assert.equal(new Headers(init?.headers).get("Authorization"), "Bearer fixture-key");
++  if (url.pathname === "/v1/uploads/images") {
++    assert.ok(body instanceof FormData);
++    assert.equal((body.get("file") as Blob).type, "image/png");
++    return json({ data: { url: "https://media.toapis.com/uploaded.png" } });
++  }
++  const kind = url.pathname.includes("images") ? "images" : "videos";
++  if (init?.method === "POST") {
++    if (mode === "uncertain") throw new Error("fixture transport lost response");
++    if (mode === "missing-id") return json({ status: "queued" });
++    return json({
++      id: `fixture-${kind}`,
++      status: mode === "immediate" ? "completed" : "queued",
++      result: { data: [{ url: `https://media.toapis.com/output.${kind === "images" ? "png" : "mp4"}` }] },
++    });
++  }
++  if (mode === "stall") return json({ id: `fixture-${kind}`, status: "processing" });
++  if (mode === "failed") return json({ id: `fixture-${kind}`, status: "failed" });
++  if (mode === "poll-http") return json({ error: "fixture" }, 503);
++  return json({
++    id: `fixture-${kind}`,
++    status: "completed",
++    result: { data: [{ url: `https://media.toapis.com/output.${kind === "images" ? "png" : "mp4"}` }] },
++  });
++};
++
++let passed = 0;
++async function check(name: string, run: () => void | Promise<void>) {
++  calls = [];
++  mode = "complete";
++  await run();
++  passed++;
++  process.stdout.write(`PASS ${name}\n`);
++}
++try {
++  const { generateImage } = await import("../../packages/server/src/services/image/image-generation.js");
++  const { generateVideo } = await import("../../packages/server/src/services/video/video-generation.js");
++  const { isToAPIsMediaUrl } = await import("../../packages/server/src/services/media/toapis-media.js");
++  const { DATA_DIR } = await import("../../packages/server/src/utils/data-dir.js");
++  const image = (patch = {}) =>
++    generateImage("openai", "https://toapis.com/v1", "fixture-key", "openai", {
++      model: "gpt-image-2",
++      prompt: "library",
++      width: 1024,
++      height: 576,
++      ...patch,
++    });
++  const video = (patch = {}) =>
++    generateVideo("seedance", "https://toapis.com/v1", "fixture-key", "seedance", {
++      model: "seedance-2-mini",
++      prompt: "gentle motion",
++      durationSeconds: 4,
++      aspectRatio: "16:9",
++      resolution: "480p",
++      referenceImage: { base64: png, mimeType: "image/png" },
++      ...patch,
++    });
++  const submissions = () => calls.filter((c) => c.method === "POST" && c.url.endsWith("/generations"));
++  await check("strict origin selection", () => {
++    for (const url of ["https://toapis.com", "https://toapis.cn/v1/"]) assert.ok(isToAPIsMediaUrl(url));
++    for (const url of [
++      "https://toapis.com.attacker.org/v1",
++      "http://toapis.com",
++      "https://toapis.com:8443",
++      "https://user@toapis.com",
++      "https://toapis.com/other",
++      "https://toapis.com/?x=1",
++    ])
++      assert.equal(isToAPIsMediaUrl(url), false);
++  });
++  await check("image async creation, exact parameters and pixels", async () => {
++    assert.deepEqual(await image({ negativePrompt: "people" }), { base64: png, mimeType: "image/png", ext: "png" });
++    assert.deepEqual(submissions()[0]!.body, {
++      model: "gpt-image-2",
++      prompt: "library\n\nDo not include: people.",
++      size: "16:9",
++      resolution: "1k",
++      n: 1,
++    });
++    assert.equal(submissions().length, 1);
++    assert.ok(calls.some((c) => c.url.endsWith("images/generations/fixture-images")));
++  });
++  await check("reference edit uploads image instead of dropping it", async () => {
++    await image({ referenceImage: png });
++    assert.deepEqual((submissions()[0]!.body as Record<string, unknown>).reference_images, [
++      "https://media.toapis.com/uploaded.png",
++    ]);
++  });
++  await check("first-frame video uses ToAPIs upload and task route", async () => {
++    assert.equal((await video()).base64, mp4.toString("base64"));
++    assert.deepEqual(submissions()[0]!.body, {
++      model: "seedance-2-mini",
++      prompt: "gentle motion",
++      duration: 4,
++      resolution: "480p",
++      aspect_ratio: "16:9",
++      generate_audio: false,
++      image_with_roles: [{ url: "https://media.toapis.com/uploaded.png", role: "first_frame" }],
++    });
++    assert.ok(calls.some((c) => c.url.endsWith("videos/generations/fixture-videos")));
++    assert.equal(
++      calls.some((c) => c.url.includes("/tasks/") || c.url.includes("catbox")),
++      false,
++    );
++  });
++  await check("text-only Test Video route", async () => {
++    await video({ referenceImage: null });
++    assert.equal(
++      calls.some((c) => c.url.endsWith("uploads/images")),
++      false,
++    );
++  });
++  await check("unsupported image model fails before upload or POST", async () => {
++    await assert.rejects(image({ model: "gpt-image-2-vip", referenceImage: png }), /ordinary gpt-image-2/);
++    assert.equal(calls.length, 0);
++  });
++  await check("unmapped quality, transparency, ratio and multiple references fail early", async () => {
++    for (const patch of [
++      { quality: "high" },
++      { transparentBackground: true },
++      { width: 500, height: 1000 },
++      { referenceImages: [png, png] },
++    ])
++      await assert.rejects(image(patch));
++    assert.equal(calls.length, 0);
++  });
++  await check("invalid video inputs fail before upload or POST", async () => {
++    for (const patch of [
++      { durationSeconds: 3 },
++      { model: "seedance-2" },
++      { lastFrameImage: { base64: png, mimeType: "image/png" } },
++      { referenceImage: { base64: "bad-data", mimeType: "image/png" } },
++    ])
++      await assert.rejects(video(patch));
++    assert.equal(calls.length, 0);
++  });
++  await check("failed task does not trigger legacy automatic retry", async () => {
++    mode = "failed";
++    await assert.rejects(video(), /no replacement/);
++    assert.equal(submissions().length, 1);
++  });
++  await check("lost submission response is not retried", async () => {
++    mode = "uncertain";
++    await assert.rejects(image(), /submission unconfirmed/);
++    assert.equal(submissions().length, 1);
++  });
++  await check("missing task ID is not retried", async () => {
++    mode = "missing-id";
++    await assert.rejects(image(), /no task ID/);
++    assert.equal(submissions().length, 1);
++  });
++  await check("polling HTTP failure is not a new generation", async () => {
++    mode = "poll-http";
++    await assert.rejects(image(), /HTTP 503/);
++    assert.equal(submissions().length, 1);
++  });
++  await check("caller cancellation stops polling, preserves receipt", async () => {
++    mode = "stall";
++    const started = Date.now();
++    await assert.rejects(video({ signal: AbortSignal.timeout(100) }));
++    assert.ok(Date.now() - started < 1500);
++    assert.equal(submissions().length, 1);
++  });
++  await check("invalid media rejected", async () => {
++    mode = "bad-media";
++    await assert.rejects(video(), /non-MP4/);
++  });
++  await check("ordinary OpenAI path preserved", async () => {
++    assert.equal(
++      (
++        await generateImage("openai", "https://api.openai.com/v1", "legacy-key", "openai", {
++          model: "gpt-image-2",
++          prompt: "library",
++        })
++      ).base64,
++      png,
++    );
++    assert.equal(calls[0]!.url, "https://api.openai.com/v1/images/generations");
++  });
++  await check("ordinary Seedance path preserved", async () => {
++    await generateVideo("seedance", "https://api.seedance2.ai", "legacy-key", "seedance", {
++      prompt: "motion",
++      durationSeconds: 4,
++      aspectRatio: "16:9",
++      resolution: "480p",
++    });
++    assert.ok((submissions()[0]!.body as Record<string, unknown>).input);
++    assert.ok(calls.some((c) => c.url === "https://api.seedance2.ai/v1/tasks/legacy"));
++  });
++  await check("private receipts retain task identity without Key", async () => {
++    const dir = join(DATA_DIR, "toapis-tasks");
++    const receipts = await Promise.all((await readdir(dir)).map((file) => readFile(join(dir, file), "utf8")));
++    assert.ok(receipts.some((text) => JSON.parse(text).status === "interrupted"));
++    assert.ok(receipts.some((text) => JSON.parse(text).status === "submission_uncertain"));
++    assert.ok(receipts.some((text) => JSON.parse(text).taskId === "fixture-videos"));
++    assert.ok(receipts.every((text) => !text.includes("fixture-key")));
++  });
++
++  const { createRequire } = await import("node:module");
++  const requireServer = createRequire(new URL("../../packages/server/package.json", import.meta.url));
++  const Fastify = requireServer("fastify") as typeof import("fastify").default;
++  const { getDB, closeDB } = await import("../../packages/server/src/db/connection.js");
++  const { connectionsRoutes } = await import("../../packages/server/src/routes/connections.routes.js");
++  const app = Fastify();
++  app.decorate("db", await getDB());
++  await app.register(connectionsRoutes, { prefix: "/api/connections" });
++  let imageId = "",
++    videoId = "";
++  try {
++    await check("real HTTP connection save, reload and Key masking", async () => {
++      for (const kind of ["image", "video"]) {
++        const saved = await app.inject({
++          method: "POST",
++          url: "/api/connections/",
++          payload: {
++            name: `ToAPIs fixture ${kind}`,
++            provider: `${kind}_generation`,
++            baseUrl: "https://toapis.com/v1",
++            apiKey: "fixture-key",
++            model: kind === "image" ? "gpt-image-2" : "seedance-2-mini",
++            ...(kind === "image"
++              ? { imageService: "openai", imageGenerationSource: "openai", defaultForAgents: true }
++              : { videoService: "seedance", videoGenerationSource: "seedance", defaultForAgents: true }),
++          },
++        });
++        assert.equal(saved.statusCode, 200, saved.body);
++        const id = saved.json().id;
++        assert.ok(id);
++        if (kind === "image") imageId = id;
++        else videoId = id;
++        const loaded = await app.inject(`/api/connections/${id}`);
++        assert.equal(loaded.statusCode, 200);
++        assert.equal(loaded.json().baseUrl, "https://toapis.com/v1");
++        assert.equal(loaded.body.includes("fixture-key"), false);
++      }
++    });
++    await check("real HTTP Test Image button route", async () => {
++      const response = await app.inject({ method: "POST", url: `/api/connections/${imageId}/test-image`, payload: {} });
++      assert.equal(response.statusCode, 200, response.body);
++      assert.equal(response.json().success, true, response.body);
++      assert.equal(response.json().base64, png);
++      assert.equal(submissions().length, 1);
++    });
++    await check("real HTTP Test Video button route", async () => {
++      const response = await app.inject({ method: "POST", url: `/api/connections/${videoId}/test-video`, payload: {} });
++      assert.equal(response.statusCode, 200, response.body);
++      assert.equal(response.json().success, true, response.body);
++      assert.equal(response.json().base64, mp4.toString("base64"));
++      assert.equal(submissions().length, 1);
++    });
++    const { galleryRoutes } = await import("../../packages/server/src/routes/gallery.routes.js");
++    const galleryApp = Fastify();
++    galleryApp.decorate("db", app.db);
++    await galleryApp.register(galleryRoutes, { prefix: "/api/gallery" });
++    try {
++      const { createChatsStorage } = await import("../../packages/server/src/services/storage/chats.storage.js");
++      const { createChatSchema } = await import("../../packages/shared/src/schemas/chat.schema.js");
++      const chats = createChatsStorage(app.db);
++      const chat = await chats.create(
++        createChatSchema.parse({
++          name: "ToAPIs offline acceptance",
++          mode: "roleplay",
++        }),
++      );
++      await chats.updateMetadata(chat!.id, { sceneVideoConnectionId: videoId, illustratorImageConnectionId: imageId });
++      let imageRow: { id: string; url: string };
++      await check("real Gallery image generation and file download", async () => {
++        const response = await galleryApp.inject({
++          method: "POST",
++          url: `/api/gallery/${chat!.id}/generate-image`,
++          payload: { prompt: "library", promptOverride: "library" },
++        });
++        assert.equal(response.statusCode, 200, response.body);
++        imageRow = response.json();
++        assert.ok(imageRow.id && imageRow.url, response.body);
++        const file = await galleryApp.inject(imageRow.url);
++        assert.equal(file.statusCode, 200, file.body);
++        assert.deepEqual(file.rawPayload, Buffer.from(png, "base64"));
++      });
++      await check("real Gallery first-frame video generation", async () => {
++        const response = await galleryApp.inject({
++          method: "POST",
++          url: "/api/gallery/generate-scene-video",
++          payload: {
++            chatId: chat!.id,
++            galleryImageId: imageRow!.id,
++            promptOverride: "gentle motion",
++            durationSeconds: 4,
++            aspectRatio: "16:9",
++          },
++        });
++        assert.equal(response.statusCode, 200, response.body);
++        assert.equal(submissions().length, 1);
++        assert.ok((submissions()[0]!.body as Record<string, unknown>).image_with_roles);
++        const list = await galleryApp.inject(`/api/gallery/scene-videos/${chat!.id}`);
++        assert.equal(list.statusCode, 200, list.body);
++        assert.ok(list.body.includes("seedance-2-mini"), list.body);
++      });
++    } finally {
++      await galleryApp.close();
++    }
++  } finally {
++    await app.close();
++    await closeDB();
++  }
++} finally {
++  globalThis.fetch = originalFetch;
++  dns.lookup = originalLookup;
++}
++process.stdout.write(`${passed} offline integration checks passed; 0 live tasks.\n`);

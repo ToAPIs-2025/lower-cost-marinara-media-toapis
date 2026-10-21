@@ -1,0 +1,49 @@
+{
+  "note": "Documentation example, not a direct Marinara import. Replace API key privately. Save video defaults with a separate PUT.",
+  "connections": [
+    {
+      "name": "ToAPIs Images",
+      "provider": "image_generation",
+      "baseUrl": "https://toapis.com/v1",
+      "apiKey": "YOUR_PRIVATE_KEY",
+      "model": "gpt-image-2",
+      "imageService": "openai",
+      "imageGenerationSource": "openai",
+      "imageGenerationQuality": "auto"
+    },
+    {
+      "name": "ToAPIs Videos",
+      "provider": "video_generation",
+      "baseUrl": "https://toapis.com/v1",
+      "apiKey": "YOUR_PRIVATE_KEY",
+      "model": "seedance-2-mini",
+      "videoService": "seedance",
+      "videoGenerationSource": "seedance"
+    },
+    {
+      "name": "ToAPIs Prompt Model",
+      "provider": "custom",
+      "baseUrl": "https://toapis.com/v1",
+      "apiKey": "YOUR_PRIVATE_KEY",
+      "model": "deepseek-v4-flash",
+      "maxContext": 32768
+    }
+  ],
+  "video_defaults_put": {
+    "method": "PUT",
+    "path": "/api/connections/{videoConnectionId}/default-parameters",
+    "body": {
+      "videoGeneration": {
+        "version": 1,
+        "service": "seedance",
+        "seedance": {
+          "durationSeconds": 4,
+          "resolution": "480p",
+          "aspectRatio": "16:9",
+          "temporaryPublicReferenceUploadEnabled": false,
+          "temporaryPublicReferenceUploadExpiry": "12h"
+        }
+      }
+    }
+  }
+}

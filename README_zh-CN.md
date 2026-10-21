@@ -1,3 +1,21 @@
+<!-- NATIVE-20261021 -->
+# ToAPIs × Marinara：原生场景媒体实测
+
+**2026-10-21：社区补丁已跑通真实 Gallery 场景图和原生界面首帧视频，播放、下载校验、刷新保留均通过。** 尚未合并上游。
+
+**[从这里开始：安装、国内／国际 URL、配置重点和价格](native/README_zh-CN.md)** · [English](native/README.md) · [脱敏测试证据](evidence/marinara-native-2026-10-21.json)
+
+| 原生适配模型 | 对应价格 | 本次成果 |
+|---|---|---|
+| `gpt-image-2` 普通 1k | **报价 $0.015/张** | [1696×960 PNG](examples/native-2026-10-21/scene.png)；任务账单未返回，最终实扣未知 |
+| `seedance-2-mini` | **$3.285714 / 百万总 tokens** | [4.04秒 MP4](examples/native-2026-10-21/scene-video.mp4)，**已结算 $0.13338**；本例折算$0.033015/秒，非固定秒价 |
+
+![应用内原生视频播放](examples/native-2026-10-21/03-native-video-playing.png)
+
+完整检查／构建通过，22项离线集成回归及桌面／移动 Edge 视口2项通过。原生适配仅覆盖以上两款媒体模型。下方较广的多模型案例是独立脚本范围。文本 Prompt Model 另计费，$0.000708日志阶段未知，详情与结算边界见配置教程。
+
+<!-- /NATIVE-20261021 -->
+
 # ToAPIs · 更低成本的 Marinara Engine 图片与视频素材方案
 
 ## 接入提案调用链已实测 · 2026-10-20
@@ -19,13 +37,13 @@ python verify_marinara_flow.py --max-usd 0.50
 python verify_marinara_flow.py --max-usd 0.50 --live
 ```
 
-离线检查 13 项通过。**Marinara 原生 Provider 注册、Gallery 导入、Test Image/Test Video 和应用内播放尚未验收。** 已有 OpenAI／Seedance 服务的协议不同，不能只更换 Base URL 就称为接入成功。
+历史独立脚本（2026-10-20）离线检查13项通过。最新本地原生补丁及界面验收见[新配置教程](native/README_zh-CN.md)。未打补丁的 OpenAI／Seedance 协议仍不同，不能只更换 Base URL 就称为接入成功。
 
 
 <!-- TOAPIS-MODELS-20261020 -->
 ## 模型与价格更新 · 2026-10-20
 
-新增可独立运行的31套图片请求模板、8套视频模板。当前26套图片与8套视频可匹配同Key精确价格；另5套图片缺价，默认阻止新付费调用。它们属于额外API脚本；项目原生Provider、UI、导入及完整出片的验收范围仍以下方原教程为准。
+新增可独立运行的31套图片请求模板、8套视频模板。当前26套图片与8套视频可匹配同Key精确价格；另5套图片缺价，默认阻止新付费调用。它们属于独立API脚本，不扩展上方原生补丁的两款媒体模型支持范围。
 
 | 图片模型／实测档位 | 当前档位报价／张 | 历史案例金额／张 | 费用证据 |
 |---|---:|---:|---|
@@ -66,7 +84,7 @@ gpt-image-2(VIP)通用价格为$0.0019/image起；本例low/1K为$0.0019/image�
 
 [English](README.md) · [对应模型与价格](https://go2v.toapis.com/1019_mari_g) · [原项目](https://github.com/Pasta-Devs/Marinara-Engine)
 
-ToAPIs 独立维护的社区教程。当前验证边界：Optional image/scene-video API bridge; adult non-explicit fantasy environment example, full app pending。这不是上游官方发行版或完整UI验收。
+ToAPIs 独立维护的社区教程。当前验证边界：历史独立 API 桥接示例；2026-10-21 本地原生补丁的最新边界见上方。这不是上游官方发行版；原生界面实测覆盖范围见上方新教程。
 
 ## 演示
 

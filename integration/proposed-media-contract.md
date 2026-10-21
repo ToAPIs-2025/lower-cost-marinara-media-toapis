@@ -1,6 +1,6 @@
 # Proposed Marinara media contract and runnable verification
 
-This is an independent ToAPIs API workflow. It does not add a provider to Marinara Engine.
+This page documents the historical independent 2026-10-20 workflow. The newer [2026-10-21 native community patch](../native/README.md) implements the async mapping in a pinned local Marinara build; it is not merged upstream.
 
 ## Run the exact proposal workflow
 
@@ -49,11 +49,11 @@ Inspected Marinara main commit: `c56501495a8baf76c258e76534c8728a9b7859bb`.
 
 These differences justify evaluating a media service adapter. They are not defects in adapters written for other providers. Another existing service may be reusable; that remains for the maintainer to confirm.
 
-## Verification boundary
+## Historical standalone verification boundary
 
 The runnable script checks the external API task chain. It does not prove native Test Image/Test Video, Gallery import, scene-video connection selection, or in-app playback.
 
-The optional `bridge.py` is a separate generic loopback API bridge. This guide does not configure Marinara's existing xAI or Seedance services to use it. Marinara-side implementation remains with its maintainers, following their requested feature process.
+The optional `bridge.py` is a separate generic loopback API bridge. This guide does not configure Marinara's existing xAI or Seedance services to use it. The newer community patch is available for assessment; upstream implementation and acceptance remain with the maintainers, following their requested feature process.
 
 Official API references: [GPT Image 2](https://docs.toapis.com/docs/cn/api-reference/images/gpt-image-2/generation), [Seedance 2](https://docs.toapis.com/docs/cn/api-reference/videos/seedance-2/generation), [image upload](https://docs.toapis.com/docs/cn/api-reference/uploads/images), [image status](https://docs.toapis.com/docs/cn/api-reference/tasks/image-status), [video status](https://docs.toapis.com/docs/cn/api-reference/tasks/video-status).
 

@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-21",
+  "upstream_commit": "d0e481913f9a0e3bab0e9b767009500d0577f98a",
+  "local_patch": true,
+  "official_upstream_merged": false,
+  "api_origin_used": "https://toapis.cn",
+  "no_media_http_mocking": true,
+  "image": {
+    "model": "gpt-image-2",
+    "requested_resolution": "1k",
+    "requested_ratio": "16:9",
+    "latency_seconds": 90.01,
+    "width": 1696,
+    "height": 960,
+    "format": "PNG",
+    "fully_decoded": true
+  },
+  "video": {
+    "model": "seedance-2-mini",
+    "requested_duration_seconds": 4,
+    "requested_resolution": "480p",
+    "requested_ratio": "16:9",
+    "generate_audio": false,
+    "latency_seconds": 92.585,
+    "width": 864,
+    "height": 496,
+    "duration_seconds": 4.04,
+    "fps": 24.0,
+    "decoded_frames": 97,
+    "frames_change": true,
+    "audio_codec": null,
+    "fully_decoded": true,
+    "case_usd_per_second": "0.03301485148514851485148514851"
+  },
+  "application_checks": {
+    "passed": true,
+    "images_after_refresh": 1,
+    "videos_after_refresh": 1,
+    "pageErrors": [],
+    "video_generated_with_real_ui": true,
+    "image_generated_with_real_app_http_route": true,
+    "illustrator_agent_button_tested": false,
+    "no_media_http_mocking": true
+  },
+  "playback": {
+    "duration": 4.041667,
+    "currentTime": 0.261816,
+    "width": 864,
+    "height": 496,
+    "readyState": 4,
+    "error": null
+  },
+  "download_sha256_matches_app_original": true,
+  "media_billing": [
+    {
+      "kind": "image",
+      "model": "gpt-image-2",
+      "billing_status": "unavailable",
+      "actual_cost_usd": null,
+      "actual_credits": null
+    },
+    {
+      "kind": "video",
+      "model": "seedance-2-mini",
+      "billing_status": "settled",
+      "actual_cost_usd": "0.13338",
+      "actual_credits": "26.676"
+    }
+  ],
+  "confirmed_media_total_usd": "0.13338",
+  "text_prompt_model": "deepseek-v4-flash",
+  "text_usage_logs": [
+    {
+      "model_name": "deepseek-v4-flash",
+      "cost_usd": "0.000264",
+      "billing_phase": "unknown",
+      "prompt_tokens": 437,
+      "completion_tokens": 221,
+      "total_tokens": 658
+    },
+    {
+      "model_name": "deepseek-v4-flash",
+      "cost_usd": "0.000444",
+      "billing_phase": "unknown",
+      "prompt_tokens": 437,
+      "completion_tokens": 446,
+      "total_tokens": 883
+    }
+  ],
+  "text_log_binding": "model and time-window candidates, not task-confirmed net settlement",
+  "key_scoped_quotes": {
+    "gpt-image-2": "0.015",
+    "seedance-2-mini_total_tokens_per_million": "3.285714"
+  },
+  "still_unverified": [
+    "Illustrator agent installation and Illustrate button",
+    "native UI reference-image edit",
+    "mobile WebKit",
+    "all other model variants",
+    "multi-user concurrency and deployment"
+  ],
+  "preconnect_attempt": {
+    "task_id_received": false,
+    "matching_usage_logs": 0,
+    "switched_to_reachable_domestic_origin": true
+  },
+  "offline_checks": {
+    "pnpm_check": "passed",
+    "media_integration_checks": 22,
+    "edge_ui_viewports_passed": 2,
+    "paid_tasks_in_regressions": 0
+  }
+}

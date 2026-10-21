@@ -1,3 +1,21 @@
+<!-- NATIVE-20261021 -->
+# ToAPIs for Marinara — native scene media tested
+
+**2026-10-21:** a community patch now generates a real Gallery image and a real first-frame video through Marinara's native review/playback UI. Playback, download integrity and persistence passed. Not yet merged upstream.
+
+**[Start here: install, domestic/international URLs, configuration and prices](native/README.md)** · [中文](native/README_zh-CN.md) · [Test evidence](evidence/marinara-native-2026-10-21.json)
+
+| Native adapter model | Relevant price | Real result |
+|---|---|---|
+| `gpt-image-2`, ordinary 1k | **$0.015/image quote** | [1696×960 PNG](examples/native-2026-10-21/scene.png); final task billing unavailable |
+| `seedance-2-mini` | **$3.285714/M total tokens** | [4.04s MP4](examples/native-2026-10-21/scene-video.mp4), **settled $0.13338**; this case $0.033015/s, not a fixed tariff |
+
+![Native Marinara playback](examples/native-2026-10-21/03-native-video-playing.png)
+
+Full build/check passed, 22 offline integration checks passed, and 2 Edge UI viewport tests passed. Native support is limited to the two media models above. The separate historical multi-model sampler below has broader coverage; it is not the native adapter's model list. Text Prompt Model calls are separately billed; see the guide for the $0.000708 unknown-phase logs and settlement limits.
+
+<!-- /NATIVE-20261021 -->
+
 # ToAPIs · Lower-cost Marinara Engine media guide
 
 ## Verified proposal workflow · 2026-10-20
@@ -19,13 +37,13 @@ python verify_marinara_flow.py --max-usd 0.50
 python verify_marinara_flow.py --max-usd 0.50 --live
 ```
 
-Offline verification: 13 tests passed. **Native Marinara provider registration, Gallery import, Test Image/Test Video and in-app playback remain unverified.** Existing OpenAI/Seedance service contracts differ, so this is not a claim that changing their Base URL enables ToAPIs.
+Historical standalone verification (2026-10-20): 13 tests passed. For the newer native community patch and its exact acceptance boundary, see [native setup](native/README.md). Existing unpatched OpenAI/Seedance service contracts differ; changing Base URL alone remains insufficient.
 
 
 <!-- TOAPIS-MODELS-20261020 -->
 ## Model support and prices · 2026-10-20
 
-Added standalone API presets: 31 image request templates and 8 video presets. Current-key pricing matches 26 image and 8 video presets; 5 image templates block new paid calls while pricing is unavailable. Native provider/UI/import/render acceptance remains as documented in the original guide below.
+Added standalone API presets: 31 image request templates and 8 video presets. Current-key pricing matches 26 image and 8 video presets; 5 image templates block new paid calls while pricing is unavailable. These standalone presets do not expand the two-model native adapter described above.
 
 | Image model / tested preset | Current preset quote / image | Historical example amount / image | Fee evidence |
 |---|---:|---:|---|
@@ -66,7 +84,7 @@ Original Marinara Engine media examples with three image models and a first-fram
 
 [中文](README_zh-CN.md) · [Model & pricing](https://go2v.toapis.com/1019_mari_g) · [Upstream](https://github.com/Pasta-Devs/Marinara-Engine)
 
-**Community guide operated by ToAPIs.** The validated boundary is: Optional image/scene-video API bridge; adult non-explicit fantasy environment example, full app pending. Individual project UI acceptance is listed below.
+**Community guide operated by ToAPIs.** The validated boundary is: Historical standalone API bridge; the separate 2026-10-21 local native patch is documented above. Individual project UI acceptance is listed below.
 
 ## Demo
 
