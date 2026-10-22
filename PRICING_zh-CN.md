@@ -1,8 +1,8 @@
 # 图片／视频价格与案例金额 · 2026-10-20
 
-<!-- TOAPIS-PROJECT-LINKS-20261022 -->
-[ToAPIs 官网首页](https://home.toapis.com/Marinara) · [模型价格](https://pricing.toapis.com/Marinara)
-<!-- /TOAPIS-PROJECT-LINKS-20261022 -->
+<!-- TOAPIS-OWNER-INVITE -->
+[注册／使用 ToAPIs](https://toapis.com/login?aff=BEWR)
+<!-- /TOAPIS-OWNER-INVITE -->
 
 
 报价核对：2026-10-20。图片案例日期2026-10-17；视频案例日期2026-10-20。表格按本例金额／秒金额排序，质量、分辨率和输入不同，不是同配置质量排名。图片日志的阶段未知，不能当作单任务最终净结算；当前报价与历史金额分别显示。视频金额均由billing=settled确认，$/s按实际文件时长折算，任务处理耗时不参与计算。Token模型不是固定每秒价，底层$/M只作小字补充。

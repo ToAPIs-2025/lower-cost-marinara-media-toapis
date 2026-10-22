@@ -1,11 +1,11 @@
 # 在 Marinara 内使用 ToAPIs：已实测的社区适配版
 
-<!-- TOAPIS-PROJECT-LINKS-20261022 -->
-[ToAPIs 官网首页](https://home.toapis.com/Marinara) · [模型价格](https://pricing.toapis.com/Marinara)
-<!-- /TOAPIS-PROJECT-LINKS-20261022 -->
+<!-- TOAPIS-OWNER-INVITE -->
+[注册／使用 ToAPIs](https://toapis.com/login?aff=BEWR) · [参考价表](../PRICING_zh-CN.md)
+<!-- /TOAPIS-OWNER-INVITE -->
 
 
-[English](README.md) · [官方快速开始](https://docs.toapis.com/docs/cn/quickstart) · [项目模型与价格入口](https://pricing.toapis.com/Marinara)
+[English](README.md) · [官方快速开始](https://docs.toapis.com/docs/cn/quickstart) · [项目模型与价格入口](https://toapis.com/login?aff=BEWR)
 
 **2026-10-21 已完成真实应用链路：Gallery 场景图 → 原生视频提示词预览 → 首帧视频 → 应用内播放、下载、刷新保留。** 基于 Marinara 2.5.1 的固定提交 [`d0e4819`](https://github.com/Pasta-Devs/Marinara-Engine/commit/d0e481913f9a0e3bab0e9b767009500d0577f98a)，需要应用本目录补丁。这是供评估的社区适配版，尚未合并到上游，也未获官方背书。
 

@@ -1,11 +1,11 @@
 # ToAPIs inside Marinara Engine — tested community adapter
 
-<!-- TOAPIS-PROJECT-LINKS-20261022 -->
-[ToAPIs homepage](https://home.toapis.com/Marinara) · [Model pricing](https://pricing.toapis.com/Marinara)
-<!-- /TOAPIS-PROJECT-LINKS-20261022 -->
+<!-- TOAPIS-OWNER-INVITE -->
+[Sign up / use ToAPIs](https://toapis.com/login?aff=BEWR) · [Guide price table](../PRICING.md)
+<!-- /TOAPIS-OWNER-INVITE -->
 
 
-[中文配置](README_zh-CN.md) · [API documentation](https://docs.toapis.com/docs/cn/quickstart) · [Models and pricing](https://pricing.toapis.com/Marinara)
+[中文配置](README_zh-CN.md) · [API documentation](https://docs.toapis.com/docs/cn/quickstart) · [Models and pricing](https://toapis.com/login?aff=BEWR)
 
 Generate a scene image in Marinara's Gallery, then animate it through its native video review and playback UI. On **2026-10-21** we completed this flow in a locally patched Marinara **2.5.1**, pinned to upstream [`d0e4819`](https://github.com/Pasta-Devs/Marinara-Engine/commit/d0e481913f9a0e3bab0e9b767009500d0577f98a). This is a community adapter for assessment; it is not merged into or endorsed by upstream. An unmodified Marinara installation cannot enable this asynchronous media contract just by changing Base URL.
 
