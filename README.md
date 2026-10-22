@@ -1,6 +1,11 @@
 <!-- NATIVE-20261021 -->
 # ToAPIs for Marinara — native scene media tested
 
+<!-- TOAPIS-PROJECT-LINKS-20261022 -->
+[ToAPIs homepage](https://home.toapis.com/Marinara) · [Model pricing](https://pricing.toapis.com/Marinara)
+<!-- /TOAPIS-PROJECT-LINKS-20261022 -->
+
+
 **2026-10-21:** a community patch now generates a real Gallery image and a real first-frame video through Marinara's native review/playback UI. Playback, download integrity and persistence passed. Not yet merged upstream.
 
 **[Start here: install, domestic/international URLs, configuration and prices](native/README.md)** · [中文](native/README_zh-CN.md) · [Test evidence](evidence/marinara-native-2026-10-21.json)
@@ -82,7 +87,7 @@ Original project examples, historical charges and integration instructions follo
 
 Original Marinara Engine media examples with three image models and a first-frame Seedance clip.
 
-[中文](README_zh-CN.md) · [Model & pricing](https://go2v.toapis.com/1019_mari_g) · [Upstream](https://github.com/Pasta-Devs/Marinara-Engine)
+[中文](README_zh-CN.md) · [Model & pricing](https://pricing.toapis.com/Marinara) · [Upstream](https://github.com/Pasta-Devs/Marinara-Engine)
 
 **Community guide operated by ToAPIs.** The validated boundary is: Historical standalone API bridge; the separate 2026-10-21 local native patch is documented above. Individual project UI acceptance is listed below.
 
@@ -141,7 +146,7 @@ Cinematic 16:9 fantasy role-playing game scene illustration, an empty moonlit al
 
 - [Upstream project](https://github.com/Pasta-Devs/Marinara-Engine)
 - [Pricing and actual charges](https://docs.toapis.com/docs/en/api-reference/account/pricing)
-- [Try the matching image model](https://go2v.toapis.com/1019_mari_g)
-- [Video model page](https://go2.toapis.com/1019_mari_v)
+- [Try the matching image model](https://pricing.toapis.com/Marinara)
+- [Video model page](https://pricing.toapis.com/Marinara)
 
 This guide is independently operated by ToAPIs and is not affiliated with, endorsed by, or supported by Pasta-Devs.

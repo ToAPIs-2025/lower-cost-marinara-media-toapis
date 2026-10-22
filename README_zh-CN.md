@@ -1,6 +1,11 @@
 <!-- NATIVE-20261021 -->
 # ToAPIs × Marinara：原生场景媒体实测
 
+<!-- TOAPIS-PROJECT-LINKS-20261022 -->
+[ToAPIs 官网首页](https://home.toapis.com/Marinara) · [模型价格](https://pricing.toapis.com/Marinara)
+<!-- /TOAPIS-PROJECT-LINKS-20261022 -->
+
+
 **2026-10-21：社区补丁已跑通真实 Gallery 场景图和原生界面首帧视频，播放、下载校验、刷新保留均通过。** 尚未合并上游。
 
 **[从这里开始：安装、国内／国际 URL、配置重点和价格](native/README_zh-CN.md)** · [English](native/README.md) · [脱敏测试证据](evidence/marinara-native-2026-10-21.json)
@@ -82,7 +87,7 @@ gpt-image-2(VIP)通用价格为$0.0019/image起；本例low/1K为$0.0019/image�
 
 同一个提示词，三个图片模型，保留原图、调用代码、参数和价格。另附一条首帧视频。
 
-[English](README.md) · [对应模型与价格](https://go2v.toapis.com/1019_mari_g) · [原项目](https://github.com/Pasta-Devs/Marinara-Engine)
+[English](README.md) · [对应模型与价格](https://pricing.toapis.com/Marinara) · [原项目](https://github.com/Pasta-Devs/Marinara-Engine)
 
 ToAPIs 独立维护的社区教程。当前验证边界：历史独立 API 桥接示例；2026-10-21 本地原生补丁的最新边界见上方。这不是上游官方发行版；原生界面实测覆盖范围见上方新教程。
 
